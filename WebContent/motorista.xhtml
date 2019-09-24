@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>Cadastrar Motoristas</title>
+	<h:outputStylesheet library="css" name="motoristaStyle.css" />
+	
+</h:head>
+<h:body>
+	<h1>Cadastrar Motoristas</h1>
+	
+	<h:form id="formPrincipal">
+
+		<h:messages infoStyle="color: green"
+			errorStyle="color: red;"
+			warnStyle="color: orange;" />
+
+		<h2>Pessoa</h2>
+		<!-- PanelGrid dos Output e Input de pessoa -->
+		<h:panelGrid columns="2" id="panelGridPessoa">
+			
+			<h:outputLabel value="Nome: "/>
+			<h:inputText value="#{motoristaController.motoristaModelObj.nome}" />
+			
+			<h:outputLabel value="E-mail: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.email}" />
+			
+			<h:outputLabel value="CPF: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.cpf}" />
+		</h:panelGrid>
+		<h2>Carro</h2>
+		<!-- PanelGrid dos Output e Input de carro -->
+		<h:panelGrid columns="2" id="panelGridCarro">
+			<h:outputLabel value="Nome: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.carroModelObj.nome}" />
+			
+			<h:outputLabel value="Marca: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.carroModelObj.marca}" />
+			
+			<h:outputLabel value="Placa: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.carroModelObj.placa}" />
+			
+			<h:outputLabel value="Data de fabricação: " />
+			<h:inputText value="#{motoristaController.motoristaModelObj.carroModelObj.dataFabricacao}">
+				<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+			</h:inputText>
+			
+		</h:panelGrid>
+		<br></br>
+		<!-- PanelGrid dos button -->
+		<h:panelGrid columns="4" id="panelGridBotoes">
+
+			<h:commandButton value="Criar" actionListener="#{motoristaController.criar}" />
+			
+			<h:commandButton value="Alterar" actionListener="#{motoristaController.alterar}" />
+			
+			<h:commandButton value="Excluir" actionListener="#{motoristaController.excluirCrud}" />
+			
+			<h:commandButton value="Limpar" actionListener="#{motoristaController.limpar}" />
+				
+		</h:panelGrid>
+
+
+		<h:dataTable value="#{motoristaController.listaMotoristaModel}" var="obj" class="dataTableClass" id="dataTableAjax">
+			<h:column>
+				<f:facet name="header">ID</f:facet>
+				<h:outputLabel value="#{obj.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">NOME</f:facet>
+				<h:commandLink value="#{obj.nome}" actionListener="#{motoristaController.editar(obj)}">
+					<f:ajax render="formPrincipal:panelGridPessoa formPrincipal:panelGridCarro formPrincipal:panelGridBotoes"
+						execute="formPrincipal:dataTableAjax"  />
+				</h:commandLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">E-MAIL</f:facet>
+				<h:outputLabel value="#{obj.email}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">CPF</f:facet>
+				<h:outputLabel value="#{obj.cpf}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">NOME CARRO</f:facet>
+				<h:outputLabel value="#{obj.carroModelObj.nome}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">MARCA</f:facet>
+				<h:outputLabel value="#{obj.carroModelObj.marca}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">PLACA</f:facet>
+				<h:outputLabel value="#{obj.carroModelObj.placa}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">DATA DE FABRICAÇÃO</f:facet>
+				<h:outputLabel value="#{obj.carroModelObj.dataFabricacao}"/>
+			</h:column>
+			<h:column>
+				<h:commandLink value="x" actionListener="#{motoristaController.excluirDataTable(obj)}" />
+			</h:column>
+		</h:dataTable>
+	</h:form>
+	
+</h:body>
+</html>
